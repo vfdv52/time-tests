@@ -22,7 +22,7 @@ def compute_overlap_time(range1, range2):
         for start2, end2 in range2:
             low = max(start1, start2)
             high = min(end1, end2)
-            # Only add valid overlaps where low <= high
-            if low <= high:
+            # Only add valid overlaps where low < high (excluding boundary touch)
+            if low < high:
                 overlap_time.append((low, high))
     return overlap_time

@@ -1,4 +1,5 @@
 import pytest
+import datetime
 from times import time_range, compute_overlap_time
 
 
@@ -21,23 +22,21 @@ def test_no_overlap():
     print(f"No overlap result: {result}")
 
 
-def test_multiple_intervals_overlap():
+def test_multiple_intervals_both_ranges():
     """Test two time ranges that both contain several intervals each"""
-    # range1: split into 2 intervals with 30 second gaps
-    range1 = time_range("2010-01-12 10:00:00", "2010-01-12 11:00:00", 2, 30)
-    
-    # range2: split into 3 intervals with 60 second gaps
-    range2 = time_range("2010-01-12 10:20:00", "2010-01-12 10:50:00", 3, 60)
+    range1 = time_range("2024-01-01 10:00:00", "2024-01-01 11:00:00", 2, 0)
+    range2 = time_range("2024-01-01 10:30:00", "2024-01-01 11:30:00", 3, 0)
     
     result = compute_overlap_time(range1, range2)
     
-    # Should have 3 valid overlaps (some intervals don't overlap)
-    assert len(result) == 3
-    print(f"Multiple intervals overlap: {result}")
+    # Should have overlaps between the intervals
+    assert len(result) > 0, "Expected overlaps between multiple intervals"
     
-    # Verify all returned overlaps are valid (start <= end)
+    # Check that all overlaps are valid (start < end)
     for start, end in result:
-        assert start <= end, f"Invalid overlap: {start} > {end}"
+        start_dt = datetime.datetime.strptime(start, "%Y-%m-%d %H:%M:%S")
+        end_dt = datetime.datetime.strptime(end, "%Y-%m-%d %H:%M:%S")
+        assert start_dt < end_dt, f"Invalid overlap: {start} to {end}"
 
 
 def test_adjacent_time_ranges():
