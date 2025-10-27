@@ -53,11 +53,17 @@ def test_adjacent_time_ranges():
 
 
 def test_backwards_time_range():
-    """Test that a backwards time range (end before start) raises ValueError"""
-    with pytest.raises(ValueError) as excinfo:
-        time_range("2010-01-12 12:00:00", "2010-01-12 10:00:00")
+    # """Test that a backwards time range (end before start) raises ValueError"""
+    # with pytest.raises(ValueError) as excinfo:
+    #     time_range("2010-01-12 12:00:00", "2010-01-12 10:00:00")
     
-    # Check that the error message is meaningful
-    assert "End time" in str(excinfo.value)
-    assert "must be after start time" in str(excinfo.value)
-    print(f"Caught expected error: {excinfo.value}")
+    # # Check that the error message is meaningful
+    # assert "End time" in str(excinfo.value)
+    # assert "must be after start time" in str(excinfo.value)
+    # print(f"Caught expected error: {excinfo.value}")
+    
+    start_time = "2010-01-12 10:15:00"
+    end_time = "2010-01-12 10:00:00"
+    
+    with pytest.raises(ValueError, match="Start time must be before end time"):
+        time_range(start_time, end_time)

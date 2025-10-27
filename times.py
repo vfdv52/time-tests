@@ -7,7 +7,7 @@ def time_range(start_time, end_time, number_of_intervals=1, gap_between_interval
     
     # Input validation: check if end_time is before start_time
     if end_time_s < start_time_s:
-        raise ValueError(f"End time ({end_time}) must be after start time ({start_time})")
+        raise ValueError("Start time must be before end time")
     
     d = (end_time_s - start_time_s).total_seconds() / number_of_intervals + gap_between_intervals_s * (1 / number_of_intervals - 1)
     sec_range = [(start_time_s + datetime.timedelta(seconds=i * d + i * gap_between_intervals_s),
