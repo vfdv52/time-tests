@@ -1,6 +1,6 @@
+import pytest
 from times import time_range, compute_overlap_time
 
-from times import time_range, compute_overlap_time
 
 def test_given_input():
     large = time_range("2010-01-12 10:00:00", "2010-01-12 12:00:00")
@@ -50,3 +50,14 @@ def test_adjacent_time_ranges():
     # Boundary point overlap where start == end
     assert result == [('2010-01-12 11:00:00', '2010-01-12 11:00:00')]
     print(f"Adjacent ranges result: {result}")
+
+
+def test_backwards_time_range():
+    """Test that a backwards time range (end before start) raises ValueError"""
+    with pytest.raises(ValueError) as excinfo:
+        time_range("2010-01-12 12:00:00", "2010-01-12 10:00:00")
+    
+    # Check that the error message is meaningful
+    assert "End time" in str(excinfo.value)
+    assert "must be after start time" in str(excinfo.value)
+    print(f"Caught expected error: {excinfo.value}")
